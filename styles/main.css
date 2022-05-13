@@ -3,27 +3,37 @@
 }
 
 #board {
-	display: grid;
-	width: 600px;
-	height: 600px;
-	grid-template-columns: repeat(6, 1fr);
-	grid-template-rows: repeat(6, 1fr);
-	grid-gap: 10px;
+	box-sizing: content-box;
+	position: relative;
+	font-size: 100px;
+	width: 6em;
+	height: 6em;
 	background-color: #999;
 	border: 6px solid black;
 }
 
-#board.winner {
-	border-right: 6px dashed transparent;
+.available {
+	position: absolute;
+	width: 1em;
+	height: 1em;
+	border: 3px solid white;
+	z-index: 100;
 }
 
-.available {
-	border: 3px solid white;
+#exit {
+	position: absolute;
+	right: calc(6em+6px);
+	top: 3em;
+	border-right: 6px solid #999;
+	z-index: 1;
 }
 
 #red, .car, .truck {
+	position: absolute;
 	background-color: white;
 	border: 3px solid transparent;
+	z-index: 100;
+	transition: left 0.4s, top 0.4s;
 }
 
 #red.selected, .car.selected, .truck.selected {
@@ -31,34 +41,34 @@
 }
 
 #red, .car.horiz {
-	grid-column-end: span 2;
+	width: 2em;
+	height: 1em;
 }
 
 .car.vert {
-	grid-row-end: span 2;
+	width: 1em;
+	height: 2em;
 }
 
 .truck.horiz {
-	grid-column-end: span 3;
+	width: 3em;
+	height: 1em;
 }
 
 .truck.vert {
-	grid-row-end: span 3;
+	width: 1em;
+	height: 3em;
 }
 
 #red {
-	grid-row: 3;
 	background-color: red;
-	position: relative;
-	transition: left 1s;
 }
 
-/* need explicit class on #red for byootiful transition to work
+/* need explicit class on #red for byootiful exit transition to work
   (#board.winner #red doesn't work)
 */
 #red.free {
-	grid-column-start: 5 !important;
-	left: 100px;
+	left: calc(5em+100px) !important;
 }
 
 #pc1 {

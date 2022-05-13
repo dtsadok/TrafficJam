@@ -1,8 +1,10 @@
+let numMoves = 0;
+let timer = 0;
+let timerInterval;
+
 function renderBoard(boardElement, pieces) {
 	for (let id in pieces) {
 		let p = pieces[id];
-
-		console.log(`${p.col},${p.row}, ${p.orient} x ${p.size}`);
 
 		const newPiece = document.createElement("div");
 
@@ -37,10 +39,12 @@ function updateBoard(pieces) {
 		const p = pieces[id];
 		const e = document.getElementById(id);
 
-		e.style.gridColumnStart = p.col;
+		if (p.col) {
+			e.style.left = `${p.col-1}em`;
+		}
 
 		if (p.row) {
-			e.style.gridRowStart = p.row;
+			e.style.top = `${p.row-1}em`;
 		}
 	}
 }
@@ -83,7 +87,7 @@ function selectPiece(pieceId, pieces) {
 	deselectAll();
 
 	//if already selected, then deselect and go
-	if (isSelected) { return; }
+	if (isSelected) return;
 
 	el.classList.add("selected");
 
@@ -96,20 +100,34 @@ function selectPiece(pieceId, pieces) {
 
 		//event handler needs to be a singleton,
 		//so use onclick instead of addEventListener
-		availableElement.onclick = function() {
-			deselectAll();
-			movePiece(pieceId, pieces, move);
-			updateBoard(pieces);
-
-			//did we win with this move?
-			if (isWinner(pieces)) {
-				const redElement = document.getElementById("red");
-				const boardElement = redElement.parentElement;
-				redElement.classList.add("free");
-				boardElement.classList.add("winner");
-			}
-		}
+		availableElement.onclick = () =>
+			clickAvailable(pieceId, pieces, move);
 	}
+}
+
+function clickAvailable(pieceId, pieces, move) {
+	deselectAll();
+
+	movePiece(pieceId, pieces, move);
+	numMoves++;
+	document.getElementById("numMoves").innerText = numMoves;
+
+	//const score = Math.floor(1000000 / (timer * numMoves));
+	//document.getElementById("score").innerText = score;
+
+	updateBoard(pieces);
+
+	//did we win with this move?
+	if (isWinner(pieces)) showWinner();
+}
+
+function showWinner() {
+	const redElement = document.getElementById("red");
+	const boardElement = redElement.parentElement;
+	redElement.classList.add("free");
+	boardElement.classList.add("winner");
+
+	clearInterval(timerInterval);
 }
 
 //pieces move based on their top-left position, but that doesn't look
@@ -131,4 +149,26 @@ function getAvailableElementForMove(move, piece) {
 	//map to element ID
 	const availableId = "available-" + pos.join("-");
 	return document.getElementById(availableId);
+}
+
+//i should start at 0 (beginning of array) on first call
+function showMoves(pieces, moves, i) {
+	if (moves[i] === undefined) return; //nothing to show (already won?)
+
+	const pieceId = Object.keys(moves[i])[0];
+	const move = moves[i][pieceId];
+	movePiece(pieceId, pieces, move);
+	numMoves++;
+	document.getElementById("numMoves").innerText = numMoves;
+	updateBoard(pieces);
+
+	if (i >= moves.length-1) {
+		showWinner();
+		return;
+	}
+
+	//show next move after interval
+	setTimeout(function() {
+		showMoves(pieces, moves, i+1);
+	}, 500);
 }
