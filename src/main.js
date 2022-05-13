@@ -1,9 +1,9 @@
 //TODO: move this to JSON
 const Pieces = {
 	red: { col: 3 },
-	pc1: { col: 1, row: 1, orient: "vert", size: 3 },
+	pc1: { col: 4, row: 5, orient: "horiz", size: 3 },
 	pc2: { col: 6, row: 3, orient: "vert", size: 2 },
-	pc3: { col: 1, row: 1, orient: "horiz", size: 2 }
+	pc3: { col: 5, row: 1, orient: "horiz", size: 2 }
 };
 const Stuff = Pieces;  //because we cant tye allow asting
 
