@@ -1,4 +1,4 @@
-body {
+* {
 	box-sizing: border-box;
 }
 
@@ -9,15 +9,25 @@ body {
 	grid-template-columns: repeat(6, 1fr);
 	grid-template-rows: repeat(6, 1fr);
 	grid-gap: 10px;
-	background-color: #888;
+	background-color: #999;
+	border: 6px solid black;
+}
+
+#board.winner {
+	border-right: 6px dashed transparent;
+}
+
+.available {
+	border: 3px solid white;
 }
 
 #red, .car, .truck {
 	background-color: white;
+	border: 3px solid transparent;
 }
 
-#red:hover, .car:hover, .truck:hover {
-	border: 2px black solid;
+#red.selected, .car.selected, .truck.selected {
+	border: 3px solid yellow;
 }
 
 #red, .car.horiz {
@@ -39,10 +49,24 @@ body {
 #red {
 	grid-row: 3;
 	background-color: red;
+	position: relative;
+	transition: left 1s;
 }
+
+/* need explicit class on #red for byootiful transition to work
+  (#board.winner #red doesn't work)
+*/
+#red.free {
+	grid-column-start: 5 !important;
+	left: 100px;
+}
+
 #pc1 {
 	background-color: yellow;
 }
 #pc2 {
 	background-color: green;
+}
+#pc3 {
+	background-color: blue;
 }
