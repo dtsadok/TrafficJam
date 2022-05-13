@@ -1,0 +1,48 @@
+body {
+	box-sizing: border-box;
+}
+
+#board {
+	display: grid;
+	width: 600px;
+	height: 600px;
+	grid-template-columns: repeat(6, 1fr);
+	grid-template-rows: repeat(6, 1fr);
+	grid-gap: 10px;
+	background-color: #888;
+}
+
+#red, .car, .truck {
+	background-color: white;
+}
+
+#red:hover, .car:hover, .truck:hover {
+	border: 2px black solid;
+}
+
+#red, .car.horiz {
+	grid-column-end: span 2;
+}
+
+.car.vert {
+	grid-row-end: span 2;
+}
+
+.truck.horiz {
+	grid-column-end: span 3;
+}
+
+.truck.vert {
+	grid-row-end: span 3;
+}
+
+#red {
+	grid-row: 3;
+	background-color: red;
+}
+#pc1 {
+	background-color: yellow;
+}
+#pc2 {
+	background-color: green;
+}
